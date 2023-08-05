@@ -25,8 +25,8 @@ ApplicationWindow {
     Material.theme: light_mode ? Material.Light : Material.Dark
     Material.accent: colorSelect(Catpuccin.latte.blue.hex, Catpuccin.mocha.blue.hex)
     Material.primary: colorSelect(Catpuccin.latte.mauve.hex, Catpuccin.mocha.mauve.hex)
-    Material.foreground: colorSelect(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex)
-    Material.background: colorSelect(Catpuccin.latte.base.hex, Catpuccin.mocha.base.hex)
+    Material.foreground: contrast_color
+    Material.background: bg_color
 
     title: "Windows Calculator Demo"
     minimumWidth: 320
@@ -41,6 +41,13 @@ ApplicationWindow {
     property color accented_color: colorSelect(Catpuccin.latte.surface1.hex, Catpuccin.mocha.surface1.hex)
     property color unique_color: colorSelect(Catpuccin.latte.overlay0.hex, Catpuccin.mocha.overlay0.hex)
     property color contrast_color: colorSelect(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex)
+
+    Behavior on color { ColorAnimation { } }
+    Behavior on bg_color { ColorAnimation { } }
+    Behavior on default_color { ColorAnimation { } }
+    Behavior on accented_color { ColorAnimation { } }
+    Behavior on unique_color { ColorAnimation { } }
+    Behavior on contrast_color { ColorAnimation { } }
 
     header: ToolBar {
         Material.primary: bg_color
