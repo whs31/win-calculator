@@ -1,2 +1,29 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>icons/backspace.svg</file>
+        <file>icons/c.svg</file>
+        <file>icons/calculator.svg</file>
+        <file>icons/ce.svg</file>
+        <file>icons/divide.svg</file>
+        <file>icons/dot.svg</file>
+        <file>icons/eight.svg</file>
+        <file>icons/equal.svg</file>
+        <file>icons/five.svg</file>
+        <file>icons/four.svg</file>
+        <file>icons/invert.svg</file>
+        <file>icons/minus.svg</file>
+        <file>icons/multiply.svg</file>
+        <file>icons/nine.svg</file>
+        <file>icons/one.svg</file>
+        <file>icons/percent.svg</file>
+        <file>icons/plus-minus.svg</file>
+        <file>icons/plus.svg</file>
+        <file>icons/seven.svg</file>
+        <file>icons/six.svg</file>
+        <file>icons/sqrt.svg</file>
+        <file>icons/square.svg</file>
+        <file>icons/three.svg</file>
+        <file>icons/two.svg</file>
+        <file>icons/zero.svg</file>
+    </qresource>
+</RCC>

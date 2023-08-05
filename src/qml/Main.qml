@@ -25,19 +25,24 @@ ApplicationWindow {
 
     property color default_color: Catpuccin.mocha.surface0.hex
     property color accented_color: Catpuccin.mocha.surface1.hex
+    property color unique_color: Catpuccin.mocha.overlay0.hex
+    property color contrast_color: Catpuccin.mocha.text.hex
 
-    component CalculatorButton : Button {
-        property string __text: ""
+    component CalculatorButton : RoundButton {
+        property string __icon: ""
         property bool __accented: false
+        property bool __unique: false
 
-        text: __text
-        font {
-            pixelSize: 15
-            weight: Font.Bold
+        radius: 4
+
+        icon {
+            color: contrast_color
+            source: __icon
         }
+
         Layout.fillWidth: true
         Layout.fillHeight: true
-        Material.background: __accented ? accented_color : default_color
+        Material.background: __accented ? __unique ? unique_color : accented_color : default_color
     }
 
     ColumnLayout {
@@ -50,103 +55,44 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            rowSpacing: -7
+            columnSpacing: rowSpacing
             columns: 4
 
-            CalculatorButton {
-                __text: "%"
+            Repeater {
+                model: ListModel {
+                    ListElement { ico: "qrc:/icons/percent.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/ce.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/c.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/backspace.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/invert.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/square.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/sqrt.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/divide.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/seven.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/eight.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/nine.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/multiply.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/four.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/five.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/six.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/minus.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/one.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/two.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/three.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/plus.svg"; accented: false }
+                    ListElement { ico: "qrc:/icons/plus-minus.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/zero.svg"; accented: true }
+                    ListElement { ico: "qrc:/icons/dot.svg"; accented: true }
+                }
+
+                delegate: CalculatorButton {
+                    __icon: ico
+                    __accented: accented
+                }
             }
 
-            CalculatorButton {
-                __text: "CE"
-            }
-
-            CalculatorButton {
-                __text: "C"
-            }
-
-            CalculatorButton {
-                __text: "<<"
-            }
-
-            CalculatorButton {
-                __text: "1/x"
-            }
-
-            CalculatorButton {
-                __text: "x^2"
-            }
-
-            CalculatorButton {
-                __text: "sqrt(x)"
-            }
-
-            CalculatorButton {
-                __text: "/"
-            }
-
-            CalculatorButton {
-                __text: "7"
-            }
-
-            CalculatorButton {
-                __text: "8"
-            }
-
-            CalculatorButton {
-                __text: "9"
-            }
-
-            CalculatorButton {
-                __text: "X"
-            }
-
-            CalculatorButton {
-                __text: "4"
-            }
-
-            CalculatorButton {
-                __text: "5"
-            }
-
-            CalculatorButton {
-                __text: "6"
-            }
-
-            CalculatorButton {
-                __text: "-"
-            }
-
-            CalculatorButton {
-                __text: "1"
-            }
-
-            CalculatorButton {
-                __text: "2"
-            }
-
-            CalculatorButton {
-                __text: "3"
-            }
-
-            CalculatorButton {
-                __text: "+"
-            }
-
-            CalculatorButton {
-                __text: "+-"
-            }
-
-            CalculatorButton {
-                __text: "0"
-            }
-
-            CalculatorButton {
-                __text: ","
-            }
-
-            CalculatorButton {
-                __text: "="
-            }
+            CalculatorButton { __icon: "qrc:/icons/equal.svg"; __accented: true; __unique: true }
         }
     }
 }
