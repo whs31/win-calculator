@@ -9,11 +9,13 @@ import "qrc:/js/catpuccin.js" as Catpuccin
 ApplicationWindow {
     id: root
 
-    Material.theme: Material.Dark
-    Material.accent: Catpuccin.mocha.blue.hex
-    Material.primary: Catpuccin.mocha.mauve.hex
-    Material.foreground: Catpuccin.mocha.text.hex
-    Material.background: Catpuccin.mocha.base.hex
+    property bool light_mode: false
+
+    Material.theme: light_mode ? Material.Light : Material.Dark
+    Material.accent: light_mode ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
+    Material.primary: light_mode ? Catpuccin.latte.mauve.hex : Catpuccin.mocha.mauve.hex
+    Material.foreground: light_mode ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
+    Material.background: light_mode ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
 
     title: "Windows Calculator Demo"
     minimumWidth: 330
@@ -21,12 +23,13 @@ ApplicationWindow {
     width: 330
     height: 500
     visible: true
-    color: Catpuccin.mocha.base.hex
+    color: Material.background
 
-    property color default_color: Catpuccin.mocha.surface0.hex
-    property color accented_color: Catpuccin.mocha.surface1.hex
-    property color unique_color: Catpuccin.mocha.overlay0.hex
-    property color contrast_color: Catpuccin.mocha.text.hex
+
+    property color default_color: light_mode ? Catpuccin.latte.surface0.hex : Catpuccin.mocha.surface0.hex
+    property color accented_color: light_mode ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface1.hex
+    property color unique_color: light_mode ? Catpuccin.latte.overlay0.hex : Catpuccin.mocha.overlay0.hex
+    property color contrast_color: light_mode ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
 
     component CalculatorButton : RoundButton {
         property string __icon: ""
