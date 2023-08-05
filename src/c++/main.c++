@@ -22,6 +22,13 @@ int main(int argc, char* argv[])
 {
 #if defined Q_OS_WINDOWS
     FreeConsole();
+    int aElements[2] = {COLOR_WINDOW, COLOR_ACTIVECAPTION};
+    DWORD aNewColors[2];
+
+    aNewColors[0] = RGB(0x80, 0x80, 0x80);  // light gray
+    aNewColors[1] = RGB(0x80, 0x80, 0x80);  // dark purple
+
+    SetSysColors(2, aElements, aNewColors);
 #endif
 
     QApplication app(argc, argv);

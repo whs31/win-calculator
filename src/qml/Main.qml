@@ -9,27 +9,154 @@ import "qrc:/js/catpuccin.js" as Catpuccin
 ApplicationWindow {
     id: root
 
+    function colorSelect(light_active, dark_active)
+    {
+        if(light_mode)
+        {
+            if(active) return light_active
+            return Qt.tint(light_active, "#20000000")
+        }
+        if(active) return dark_active
+        return Qt.tint(dark_active, "#15FFFFFF")
+    }
+
     property bool light_mode: false
 
     Material.theme: light_mode ? Material.Light : Material.Dark
-    Material.accent: light_mode ? Catpuccin.latte.blue.hex : Catpuccin.mocha.blue.hex
-    Material.primary: light_mode ? Catpuccin.latte.mauve.hex : Catpuccin.mocha.mauve.hex
-    Material.foreground: light_mode ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
-    Material.background: light_mode ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
+    Material.accent: colorSelect(Catpuccin.latte.blue.hex, Catpuccin.mocha.blue.hex)
+    Material.primary: colorSelect(Catpuccin.latte.mauve.hex, Catpuccin.mocha.mauve.hex)
+    Material.foreground: colorSelect(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex)
+    Material.background: colorSelect(Catpuccin.latte.base.hex, Catpuccin.mocha.base.hex)
 
     title: "Windows Calculator Demo"
-    minimumWidth: 330
-    minimumHeight: 500
-    width: 330
-    height: 500
+    minimumWidth: 320
+    minimumHeight: 470
+    width: 320
+    height: 470
     visible: true
     color: Material.background
 
-    property color bg_color: light_mode ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
-    property color default_color: light_mode ? Catpuccin.latte.surface0.hex : Catpuccin.mocha.surface0.hex
-    property color accented_color: light_mode ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface1.hex
-    property color unique_color: light_mode ? Catpuccin.latte.overlay0.hex : Catpuccin.mocha.overlay0.hex
-    property color contrast_color: light_mode ? Catpuccin.latte.text.hex : Catpuccin.mocha.text.hex
+    property color bg_color: colorSelect(Catpuccin.latte.base.hex, Catpuccin.mocha.base.hex)
+    property color default_color: colorSelect(Catpuccin.latte.surface0.hex, Catpuccin.mocha.surface0.hex)
+    property color accented_color: colorSelect(Catpuccin.latte.surface1.hex, Catpuccin.mocha.surface1.hex)
+    property color unique_color: colorSelect(Catpuccin.latte.overlay0.hex, Catpuccin.mocha.overlay0.hex)
+    property color contrast_color: colorSelect(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex)
+
+    header: ToolBar {
+        Material.primary: bg_color
+        Layout.fillWidth: true
+
+        RowLayout {
+            anchors.fill: parent
+
+            ToolButton {
+                id: ctrl
+                icon {
+                    color: contrast_color
+                    source: "qrc:/icons/ui/menu.svg"
+                }
+
+                onPressed: {
+                    anim.start()
+                    sidepanel.open()
+                }
+
+                SequentialAnimation {
+                    id: anim
+
+                    PropertyAnimation {
+                        target: ctrl
+                        property: "scale"
+                        to: 0.8
+                        duration: 100
+                        easing.type: Easing.InOutQuad
+                    }
+
+                    PropertyAnimation {
+                        target: ctrl
+                        property: "scale"
+                        to: 1.0
+                        duration: 100
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+            }
+
+            Text {
+                Layout.fillWidth: true
+                text: "Обычный"
+                font {
+                    pixelSize: 20
+                    weight: Font.DemiBold
+                }
+                color: contrast_color
+            }
+
+            ToolButton {
+                icon {
+                    color: contrast_color
+                    source: "qrc:/icons/ui/history.svg"
+                }
+            }
+        }
+    }
+
+    Drawer {
+        id: sidepanel
+        width: parent.width * 0.66
+        height: parent.height
+
+        ToolButton {
+            id: ctrl2
+            icon {
+                color: contrast_color
+                source: "qrc:/icons/ui/menu.svg"
+            }
+
+            onPressed: {
+                anim2.start()
+                sidepanel.close()
+            }
+
+            SequentialAnimation {
+                id: anim2
+
+                PropertyAnimation {
+                    target: ctrl2
+                    property: "scale"
+                    to: 0.8
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
+
+                PropertyAnimation {
+                    target: ctrl2
+                    property: "scale"
+                    to: 1.0
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+
+        ColumnLayout {
+            anchors.top: ctrl2.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            Button {
+                icon {
+                    color: contrast_color
+                    source: light_mode ? "qrc:/icons/ui/light.svg" : "qrc:/icons/ui/dark.svg"
+                }
+                flat: true
+                text: "Переключить тему"
+                onPressed: light_mode = !light_mode
+            }
+
+
+        }
+    }
 
     component CalculatorButton : RoundButton {
         property string __icon: ""
@@ -71,8 +198,10 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             Text {
+                Layout.topMargin: 10
+                Layout.rightMargin: 5
                 font {
-                    pixelSize: 24
+                    pixelSize: 20
                 }
                 color: accented_color
                 text: "23+1"
@@ -80,17 +209,34 @@ ApplicationWindow {
                 horizontalAlignment: Text.AlignRight
             }
 
-            TextField {
+            TextInput {
+                function getInputFontSize(l)
+                {
+                    if(l <= 13) return 42
+                    if(l <= 14) return 40
+                    if(l <= 15) return 38
+                    if(l <= 16) return 34
+                    if(l <= 17) return 33
+                    if(l <= 18) return 29
+                    return 28
+                }
+
                 Layout.fillWidth: true
+                Layout.preferredHeight: 60
                 id: input
                 selectByMouse: true
+                maximumLength: 17
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignBottom
                 font {
-                    pixelSize: 42
+                    pixelSize: getInputFontSize(length)
                     weight: Font.DemiBold
                 }
                 text: "123123"
+                readOnly: true
+                color: contrast_color
+                selectionColor: accented_color
             }
         }
 
@@ -110,7 +256,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            rowSpacing: -7
+            rowSpacing: -9
             columnSpacing: rowSpacing
             columns: 4
 
