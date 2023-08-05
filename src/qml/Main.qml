@@ -25,7 +25,7 @@ ApplicationWindow {
     visible: true
     color: Material.background
 
-
+    property color bg_color: light_mode ? Catpuccin.latte.base.hex : Catpuccin.mocha.base.hex
     property color default_color: light_mode ? Catpuccin.latte.surface0.hex : Catpuccin.mocha.surface0.hex
     property color accented_color: light_mode ? Catpuccin.latte.surface1.hex : Catpuccin.mocha.surface1.hex
     property color unique_color: light_mode ? Catpuccin.latte.overlay0.hex : Catpuccin.mocha.overlay0.hex
@@ -48,11 +48,63 @@ ApplicationWindow {
         Material.background: __accented ? __unique ? unique_color : accented_color : default_color
     }
 
+    component CalculatorMemBarButton : RoundButton {
+        property string __text: ""
+
+        radius: 2
+        flat: true
+
+        font {
+            pixelSize: 14
+            weight: Font.DemiBold
+        }
+        text: __text
+        Layout.fillWidth: true
+        Material.background: bg_color
+    }
+
     ColumnLayout {
         anchors.fill: parent
-        // Input ...
+        spacing: -7
 
-        // Row ...
+        ColumnLayout {
+            Layout.fillWidth: true
+
+            Text {
+                font {
+                    pixelSize: 24
+                }
+                color: accented_color
+                text: "23+1"
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignRight
+            }
+
+            TextField {
+                Layout.fillWidth: true
+                id: input
+                selectByMouse: true
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                horizontalAlignment: Text.AlignRight
+                font {
+                    pixelSize: 42
+                    weight: Font.DemiBold
+                }
+                text: "123123"
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: -7
+
+            CalculatorMemBarButton { __text: "MC"; enabled: false }
+            CalculatorMemBarButton { __text: "MR"; enabled: false }
+            CalculatorMemBarButton { __text: "M+" }
+            CalculatorMemBarButton { __text: "M-" }
+            CalculatorMemBarButton { __text: "MS" }
+            CalculatorMemBarButton { __text: "M˅"; enabled: false }
+        }
 
         GridLayout {
             Layout.fillWidth: true
