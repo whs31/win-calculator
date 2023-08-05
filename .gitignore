@@ -1,2 +1,5 @@
 build/*
-.txt.user
+cmake-build-*
+.idea
+CMakeLists.txt.user
+*.user
