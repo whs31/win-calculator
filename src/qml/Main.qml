@@ -42,12 +42,12 @@ ApplicationWindow {
     property color unique_color: colorSelect(Catpuccin.latte.overlay0.hex, Catpuccin.mocha.overlay0.hex)
     property color contrast_color: colorSelect(Catpuccin.latte.text.hex, Catpuccin.mocha.text.hex)
 
-    Behavior on color { ColorAnimation { } }
-    Behavior on bg_color { ColorAnimation { } }
-    Behavior on default_color { ColorAnimation { } }
-    Behavior on accented_color { ColorAnimation { } }
-    Behavior on unique_color { ColorAnimation { } }
-    Behavior on contrast_color { ColorAnimation { } }
+    Behavior on color { ColorAnimation { easing.type: Easing.InOutQuad } }
+    Behavior on bg_color { ColorAnimation { easing.type: Easing.InOutQuad } }
+    Behavior on default_color { ColorAnimation { easing.type: Easing.InOutQuad } }
+    Behavior on accented_color { ColorAnimation { easing.type: Easing.InOutQuad } }
+    Behavior on unique_color { ColorAnimation { easing.type: Easing.InOutQuad } }
+    Behavior on contrast_color { ColorAnimation { easing.type: Easing.InOutQuad } }
 
     header: ToolBar {
         Material.primary: bg_color
@@ -160,8 +160,6 @@ ApplicationWindow {
                 text: "Переключить тему"
                 onPressed: light_mode = !light_mode
             }
-
-
         }
     }
 
@@ -169,6 +167,7 @@ ApplicationWindow {
         property string __icon: ""
         property bool __accented: false
         property bool __unique: false
+        property Action __action: null
 
         radius: 4
 
@@ -176,6 +175,8 @@ ApplicationWindow {
             color: contrast_color
             source: __icon
         }
+
+        action: __action
 
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -240,7 +241,7 @@ ApplicationWindow {
                     pixelSize: getInputFontSize(length)
                     weight: Font.DemiBold
                 }
-                text: "123123"
+                text: ""
                 readOnly: true
                 color: contrast_color
                 selectionColor: accented_color
@@ -267,39 +268,36 @@ ApplicationWindow {
             columnSpacing: rowSpacing
             columns: 4
 
-            Repeater {
-                model: ListModel {
-                    ListElement { ico: "qrc:/icons/percent.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/ce.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/c.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/backspace.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/invert.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/square.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/sqrt.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/divide.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/seven.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/eight.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/nine.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/multiply.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/four.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/five.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/six.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/minus.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/one.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/two.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/three.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/plus.svg"; accented: false }
-                    ListElement { ico: "qrc:/icons/plus-minus.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/zero.svg"; accented: true }
-                    ListElement { ico: "qrc:/icons/dot.svg"; accented: true }
-                }
-
-                delegate: CalculatorButton {
-                    __icon: ico
-                    __accented: accented
-                }
+            component DigitAction : Action {
+                property string value: ""
+                property string sequence: ""
+                shortcut: sequence
+                onTriggered: input.insert(input.length, value)
             }
 
+            CalculatorButton { __icon: "qrc:/icons/percent.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/ce.svg"; __accented: false; __action: Action { shortcut: "C"; onTriggered: input.clear() } }
+            CalculatorButton { __icon: "qrc:/icons/c.svg"; __accented: false; __action: Action { shortcut: "Shift+C"; onTriggered: input.clear() } }
+            CalculatorButton { __icon: "qrc:/icons/backspace.svg"; __accented: false; __action: Action { shortcut: "Backspace"; onTriggered: input.remove(input.length - 1, input.length) } }
+            CalculatorButton { __icon: "qrc:/icons/invert.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/square.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/sqrt.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/divide.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/seven.svg"; __accented: true; __action: DigitAction { value: "7"; sequence: "7" } }
+            CalculatorButton { __icon: "qrc:/icons/eight.svg"; __accented: true; __action: DigitAction { value: "8"; sequence: "8" } }
+            CalculatorButton { __icon: "qrc:/icons/nine.svg"; __accented: true; __action: DigitAction { value: "9"; sequence: "9" } }
+            CalculatorButton { __icon: "qrc:/icons/multiply.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/four.svg"; __accented: true; __action: DigitAction { value: "4"; sequence: "4" } }
+            CalculatorButton { __icon: "qrc:/icons/five.svg"; __accented: true; __action: DigitAction { value: "5"; sequence: "5" } }
+            CalculatorButton { __icon: "qrc:/icons/six.svg"; __accented: true; __action: DigitAction { value: "6"; sequence: "6" } }
+            CalculatorButton { __icon: "qrc:/icons/minus.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/one.svg"; __accented: true; __action: DigitAction { value: "1"; sequence: "1" } }
+            CalculatorButton { __icon: "qrc:/icons/two.svg"; __accented: true; __action: DigitAction { value: "2"; sequence: "2" } }
+            CalculatorButton { __icon: "qrc:/icons/three.svg"; __accented: true; __action: DigitAction { value: "3"; sequence: "3" } }
+            CalculatorButton { __icon: "qrc:/icons/plus.svg"; __accented: false }
+            CalculatorButton { __icon: "qrc:/icons/plus-minus.svg"; __accented: true }
+            CalculatorButton { __icon: "qrc:/icons/zero.svg"; __accented: true; __action: DigitAction { value: "0"; sequence: "0" } }
+            CalculatorButton { __icon: "qrc:/icons/dot.svg"; __accented: true }
             CalculatorButton { __icon: "qrc:/icons/equal.svg"; __accented: true; __unique: true }
         }
     }
