@@ -20,47 +20,47 @@
 
 int main(int argc, char* argv[])
 {
-#if defined Q_OS_WINDOWS
-    FreeConsole();
-    int aElements[2] = {COLOR_WINDOW, COLOR_ACTIVECAPTION};
-    DWORD aNewColors[2];
+  #if defined Q_OS_WINDOWS
+  FreeConsole();
+      int aElements[2] = {COLOR_WINDOW, COLOR_ACTIVECAPTION};
+      DWORD aNewColors[2];
 
-    aNewColors[0] = RGB(0x80, 0x80, 0x80);  // light gray
-    aNewColors[1] = RGB(0x80, 0x80, 0x80);  // dark purple
+      aNewColors[0] = RGB(0x80, 0x80, 0x80);
+      aNewColors[1] = RGB(0x80, 0x80, 0x80);
 
-    SetSysColors(2, aElements, aNewColors);
-#endif
+      SetSysColors(2, aElements, aNewColors);
+  #endif
 
-    QApplication app(argc, argv);
-    QCoreApplication::setApplicationName(PROJECT_NAME);
-    QCoreApplication::setApplicationVersion(PROJECT_VERSION);
-    QCoreApplication::setOrganizationName(PROJECT_COMPANY);
+  QApplication app(argc, argv);
+  QCoreApplication::setApplicationName(PROJECT_NAME);
+  QCoreApplication::setApplicationVersion(PROJECT_VERSION);
+  QCoreApplication::setOrganizationName(PROJECT_COMPANY);
 
-//    #ifndef Q_OS_WINDOWS
-//        QApplication::setWindowIcon(QIcon(":/icon.png"));
-//    #else
-//        QApplication::setWindowIcon(QIcon(":/icon.ico"));
-//    #endif
+  #ifndef Q_OS_WINDOWS
+    QApplication::setWindowIcon(QIcon(":/icon.png"));
+  #else
+    QApplication::setWindowIcon(QIcon(":/icon.ico"));
+  #endif
 
-    qInfo().noquote() << QCoreApplication::applicationName() << "version" << QCoreApplication::applicationVersion();
+  qInfo().noquote() << QCoreApplication::applicationName() << "version" << QCoreApplication::applicationVersion();
 
-    const QUrl qml_entry(QStringLiteral("qrc:/Main.qml"));
+  const QUrl qml_entry(QStringLiteral("qrc:/Main.qml"));
 
-    Calculator calculator;
+  Calculator calculator;
 
-    qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
-    QQuickStyle::setStyle("Material");
+  qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
+  QQuickStyle::setStyle("Material");
 
-    QQmlEngine engine;
-    QObject::connect(&engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);
+  QQmlEngine engine;
+  QObject::connect(&engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);
 
-    QQmlComponent component(&engine);
-    QQuickWindow::setDefaultAlphaBuffer(true);
-    component.loadUrl(qml_entry);
-    if(component.isReady())
-        component.create();
-    else
-        qCritical() << "[QML ERROR]" << component.errorString();
+  QQmlComponent component(&engine);
+  QQuickWindow::setDefaultAlphaBuffer(true);
+  component.loadUrl(qml_entry);
+  if(component.isReady())
+    component.create();
+  else
+    qCritical() << "[QML ERROR]" << component.errorString();
 
-    return QApplication::exec();
+  return QApplication::exec();
 }

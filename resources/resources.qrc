@@ -29,5 +29,7 @@
         <file>icons/ui/menu.svg</file>
         <file>icons/ui/dark.svg</file>
         <file>icons/ui/light.svg</file>
+        <file>icon.ico</file>
+        <file>icon.png</file>
     </qresource>
 </RCC>

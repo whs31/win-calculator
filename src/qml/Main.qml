@@ -91,7 +91,7 @@ ApplicationWindow {
 
             Text {
                 Layout.fillWidth: true
-                text: "Обычный"
+                text: "Standard"
                 font {
                     pixelSize: 20
                     weight: Font.DemiBold
@@ -157,7 +157,7 @@ ApplicationWindow {
                     source: light_mode ? "qrc:/icons/ui/light.svg" : "qrc:/icons/ui/dark.svg"
                 }
                 flat: true
-                text: "Переключить тему"
+                text: "Switch theme"
                 onPressed: light_mode = !light_mode
             }
         }
